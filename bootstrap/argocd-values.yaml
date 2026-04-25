@@ -1,0 +1,10 @@
+server:
+  replicas: 2           # which runs 2 instances for High Availability (HA), in case one pod fail
+  service:
+    type: LoadBalancer  # it decides which one should handle incoming traffic 
+applicationSet:
+  replicas: 2
+redis-ha:
+  enabled: true         # to cache data , which means Argo does not have to fetch them every single time
+controller:
+  replicas: 2
