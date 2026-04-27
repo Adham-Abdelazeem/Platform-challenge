@@ -2,7 +2,9 @@ apiVersion: argoproj.io/v1alpha1    # which Argocd language we are using
 kind: Application                  # the type of object Argo going to build        
 metadata:
   name: postgres-infra-loader               # the name in Argocd UI
-  namespace: argocd                 # that is where the Argocd software is installed
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"                 # that is where the Argocd software is installed
 spec:
   project: default                  # could be different for security , but let's keep it default for now 
   source:
