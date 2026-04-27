@@ -4,6 +4,10 @@ metadata:
   name: postgres-operator
   namespace: argocd
 spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
   source:
     chart: postgres                           # to tell Argocd the name of the Helm Char to look for
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"

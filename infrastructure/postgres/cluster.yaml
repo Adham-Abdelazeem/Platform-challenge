@@ -1,10 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master-standalone-strict/all.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: postgres-ha
   namespace: postgres
 spec:
-  instances: 3              # 1 primary + 2 replicas (for automatioed healing)
+  instances: 3              # 1 primary + 2 replicas (for automated healing)
   primaryUpdateStrategy: unsupervised
 
   storage:
