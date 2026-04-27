@@ -15,6 +15,8 @@ spec:
       valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
         installCRDs: true
         replicaCount: 2
+        rbac:
+          create: true
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
     namespace: postgres                                  # tells Argocd which room in K8s i want cert-manager to live
