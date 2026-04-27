@@ -11,6 +11,10 @@ spec:
     chart: cloudnative-pg                           # to tell Argocd the name of the Helm Char to look for
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
     targetRevision: v0.28.0
+    helm:
+      valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
+        installCRDs: true
+        replicaCount: 2
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
     namespace: postgres                                  # tells Argocd which room in K8s i want cert-manager to live
@@ -20,7 +24,3 @@ spec:
       selfHeal: true                                         # if someone ignores gitLab and tried to manually change someething in this app , Argocd overwrite it to match the GitLab version
       syncOptions:
         - CreateNamespace=true                                # just in case , but i have already created it 
-    helm:
-      valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
-        installCRDs: true
-        replicaCount: 2
