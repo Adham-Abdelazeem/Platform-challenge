@@ -1,0 +1,2 @@
+installCRDs: true    # which installs the Custom Resource Definitions, which teaches K8s the new concepts like "Certificates" and "Issuer", otherwise any cert-manager resource will be created will be unknown
+replicaCount: 2      # HA: 2 replicas / pods / operators
