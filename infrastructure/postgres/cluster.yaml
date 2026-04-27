@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master-standalone-strict/all.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-ha
+  namespace: postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  instances: 3              # 1 primary + 2 replicas (for automated healing)
+  primaryUpdateStrategy: unsupervised
+
+  storage:
+    size: 5Gi              # disk per instance
+    storageClass: local-path  # k3d's built-in storage class
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: "256MB"
+
+  bootstrap:
+    initdb:
+      database: openbao    # create this database on init
+      owner: openbao       # create this user as owner
+      secret:
+        name: openbao-db-credentials  # reference to a K8s secret with the password
+
+  # monitoring:
+  #   enablePodMonitor: true  # expose metrics
+
+  # backup:
+  #   retentionPolicy: "30d"
+  #   barmanObjectStore:       # backup to S3-compatible storage
+  #     destinationPath: "s3://your-bucket/postgres"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: backup-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: backup-credentials
+  #         key: SECRET_ACCESS_KEY
