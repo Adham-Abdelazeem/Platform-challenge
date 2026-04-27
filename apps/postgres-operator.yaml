@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1    # which Argocd language we are using
+kind: Application                  # the type of object Argo going to build        
+metadata:
+  name: postgres-infra-loader               # the name in Argocd UI
+  namespace: argocd                 # that is where the Argocd software is installed
+spec:
+  project: default                  # could be different for security , but let's keep it default for now 
+  source:
+    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git  # tells  Argocd which Repo link to look at
+    targetRevision: main                                     # tells Argocd which branch
+    path: infrastructure/postgres                      # this is where the actual cert-manager app is exist in my project
+  destination:
+    server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
+    namespace: postgres                                  # tells Argocd which room in K8s i want cert-manager to live
+  syncPolicy:
+    automated:
+      prune: true                                            # like a mirro , what happens in gitLab , mirrored in the cluster
+      selfHeal: true                                         # if someone ignores gitLab and tried to manually change someething in this app , Argocd overwrite it to match the GitLab version
+      syncOptions:
+        - CreateNamespace=true                                # just in case , but i have already created it 
