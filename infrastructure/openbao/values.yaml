@@ -1,0 +1,33 @@
+server:
+      ha:
+        enabled: true
+        replicas: 3           # 3 OpenBao instances (1 active, 2 standby)
+        raft:
+          enabled: false      # we use PostgreSQL, not Raft
+
+      storage:
+        postgresql:
+          address: "postgres-ha-rw.postgres.svc.cluster.local:5432"
+          database: "openbao"
+          username: "openbao"
+          password: "${OPENBAO_PG_PASSWORD}"  # from env var
+          sslmode: "require"                  # TLS to PostgreSQL
+
+      extraEnvironmentVars:
+        OPENBAO_PG_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: openbao-db-credentials
+              key: password
+
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+
+      ui:
+        enabled: true
+        serviceType: LoadBalancer
