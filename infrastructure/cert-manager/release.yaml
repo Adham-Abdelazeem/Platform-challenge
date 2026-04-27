@@ -4,6 +4,10 @@ metadata:
   name: cert-manager
   namespace: argocd
 spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
   source:
     chart: cert-manager                           # to tell Argocd the name of the Helm Char to look for
     repoURL: https://charts.jetstack.io           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
