@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true       # delete resources from the cluster that are removed from Git (to be like a mirror)
+      selfHeal: true    # revert manual changes back to Git state in case someone manually changed something with kubectl.

@@ -1,0 +1,6 @@
+apiVersion: cert-manager.io/v1
+  kind: ClusterIssuer
+  metadata:
+    name: selfsigned-issuer                # as it is internal certifications we are not going to use "Let's Encrypt" option, which requires a public accessible domain
+spec:
+  selfSigned: {}
