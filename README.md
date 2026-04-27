@@ -109,3 +109,26 @@ Installed Argo CD.
 
 ---
 
+### Phase 3 — cert-manager (TLS Infrastructure)
+**Date:** 2026-04-27
+
+Installed cert-manager which is the component that issues and auto-renews TLS certificates inside the cluster. 
+
+**Files created:**
+- `apps/cert-manager.yaml`, the Argo CD Application manifest (tells Argo CD to manage cert-manager)
+- `infrastructure/cert-manager/values.yaml`, the Helm config
+- `infrastructure/cert-manager/release.yaml`, the Helm release definition
+- `infrastructure/cert-manager/cluster-issuer.yaml`, the self-signed certificate authority
+- `bootstrap/root-application.yaml`,the root App of Apps (deployed here, activates all `apps/`)
+
+**What was done:**
+- Created the Argo CD root Application manifest (App of Apps pattern) — one root app that discovers and manages all other apps
+- Created `values.yaml` with `installCRDs: true` and `replicaCount: 2`
+- Created a Helm release manifest for Argo CD to deploy cert-manager from the external chart
+- Created a `ClusterIssuer` using `selfSigned`, which acts as the internal certificate authority for all cluster components
+- Pushed everything; Argo CD picked it up and deployed cert-manager automatically
+
+---
+
+
+
