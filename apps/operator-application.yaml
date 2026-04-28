@@ -11,10 +11,10 @@ spec:
     chart: cloudnative-pg                           # to tell Argocd the name of the Helm Char to look for
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
     targetRevision: 0.28.0
-    helm:
-      values: |
-        monitoring:
-          podMonitorEnabled: true
+    # helm:
+    #   values: |
+    #     monitoring:
+    #       podMonitorEnabled: true
         
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
