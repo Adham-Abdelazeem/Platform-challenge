@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openbao-infra-loader
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/yourname/platform-challenge
+    targetRevision: main
+    path: infrastructure/openbao
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openbao
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
