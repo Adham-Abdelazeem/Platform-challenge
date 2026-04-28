@@ -4,7 +4,7 @@ metadata:
   name: postgres-infra-loader
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
@@ -13,7 +13,7 @@ spec:
     path: infrastructure/postgres  
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: postgres
   syncPolicy:
     automated:
       prune: true

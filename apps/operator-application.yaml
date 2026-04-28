@@ -13,13 +13,15 @@ spec:
     targetRevision: 0.20.0
     helm:
       valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
-        installCRDs: true
+        installCRDs: true                       # to tell Argocd to install the Custom Resource Definition (CRD) of the chart , which is required for the chart to work
         replicaCount: 2
-        rbac:
+        monitoring:                                  # to enable monitoring for the chart
+          podMonitorEnabled: true
+        rbac:                                                       # to give Argocd the permission to create RBAC resources for the chart
           create: true
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
-    namespace: postgres                                  # tells Argocd which room in K8s i want cert-manager to live
+    namespace: cnpg-system                                  # tells Argocd which room in K8s i want cnpg-system to live
   syncPolicy:
     automated:
       prune: true                                            # like a mirro , what happens in gitLab , mirrored in the cluster
