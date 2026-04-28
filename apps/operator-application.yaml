@@ -12,12 +12,9 @@ spec:
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
     targetRevision: 0.28.0
     helm:
-      valuesObject :                                           # to give Argocd the values that i want to override in the default values of the chart
-        replicaCount: 2
+      values: |
         monitoring:
           podMonitorEnabled: true
-        rbac:
-          create: true
         
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
