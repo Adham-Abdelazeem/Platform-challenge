@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1    # which Argocd language we are using
 kind: Application                  # the type of object Argo going to build        
 metadata:
-  name: postgres-infra-loader               # the name in Argocd UI
+  name: cnpg-system-operator               # the name in Argocd UI
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"                 # that is where the Argocd software is installed
