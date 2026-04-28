@@ -1,0 +1,6 @@
+# CloudNativePG operator Helm values
+monitoring:
+  podMonitorEnabled: true
+
+# operator watches all namespaces by default
+# no changes needed for local dev

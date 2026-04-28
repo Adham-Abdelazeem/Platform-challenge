@@ -12,13 +12,9 @@ spec:
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
     targetRevision: 0.28.0
     helm:
-      valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
-        installCRDs: true                       # to tell Argocd to install the Custom Resource Definition (CRD) of the chart , which is required for the chart to work
-        replicaCount: 2
-        monitoring:                                  # to enable monitoring for the chart
-          podMonitorEnabled: true
-        rbac:                                                       # to give Argocd the permission to create RBAC resources for the chart
-          create: true
+      valueFiles:                                           # to give Argocd the values that i want to override in the default values of the chart
+        - operator-values.yaml
+        
   destination:
     server: https://kubernetes.default.svc                   # tell Argocd which cluster , here is the same as Argocd is installed
     namespace: cnpg-system                                  # tells Argocd which room in K8s i want cnpg-system to live
