@@ -10,7 +10,7 @@ spec:
   source:
     chart: cloudnative-pg                           # to tell Argocd the name of the Helm Char to look for
     repoURL: https://cloudnative-pg.github.io/charts           # to give Argocd the permission to install charts from Helm , instead we do it manually , even if we did , it will   not work because of the Self-healing is "True"
-    targetRevision: v0.28.0
+    targetRevision: 0.20.0
     helm:
       valuesObject:                                           # to give Argocd the values that i want to override in the default values of the chart
         installCRDs: true
