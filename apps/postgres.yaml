@@ -8,13 +8,12 @@ metadata:
 spec:
   project: default
   source:
-    # THIS MUST BE YOUR GITLAB REPO
     repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
     targetRevision: main
     path: infrastructure/postgres  
   destination:
     server: https://kubernetes.default.svc
-    namespace: postgres
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

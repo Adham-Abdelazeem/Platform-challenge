@@ -18,3 +18,4 @@ spec:
       valuesObject:
         installCRDs: true
         replicaCount: 2
+  
