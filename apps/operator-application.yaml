@@ -23,6 +23,4 @@ spec:
     automated:
       prune: true                                            # if a resource exists in the cluster but was deleted from Git
       selfHeal: true                                         # if someone ignores gitLab and tried to manually change someething in this app , Argocd overwrite it to match the GitLab version, like a mirro , what happens in gitLab , mirrored in the cluster
-      syncOptions:
-        - CreateNamespace=true                                # just in case , but i have already created it 
-        - ServerSideApply=true
+
