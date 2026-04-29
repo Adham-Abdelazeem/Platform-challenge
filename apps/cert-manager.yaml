@@ -16,5 +16,3 @@ spec:
     automated:
       prune: true                                            # like a mirro , what happens in gitLab , mirrored in the cluster
       selfHeal: true                                         # if someone ignores gitLab and tried to manually change someething in this app , Argocd overwrite it to match the GitLab version
-      syncOptions:
-        - CreateNamespace=true                                # just in case , but i have already created it 
