@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root
+  name: platform-challenge-root
   namespace: argocd
 spec:
   project: default
@@ -14,5 +14,5 @@ spec:
     namespace: argocd
   syncPolicy:
     automated:
-      prune: true       # delete resources from the cluster that are removed from Git (to be like a mirror)
-      selfHeal: true    # revert manual changes back to Git state in case someone manually changed something with kubectl.
+      prune: true
+      selfHeal: true

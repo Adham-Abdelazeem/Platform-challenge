@@ -116,10 +116,9 @@ Installed cert-manager which is the component that issues and auto-renews TLS ce
 
 **Files created:**
 - `apps/cert-manager.yaml`, the Argo CD Application manifest (tells Argo CD to manage cert-manager)
-- `infrastructure/cert-manager/values.yaml`, the Helm config
 - `infrastructure/cert-manager/release.yaml`, the Helm release definition
 - `infrastructure/cert-manager/cluster-issuer.yaml`, the self-signed certificate authority
-- `bootstrap/root-application.yaml`,the root App of Apps (deployed here, activates all `apps/`)
+- `bootstrap/root-application.yaml`,the root App of Apps (deployed here, activates all `apps/`)- which was applied manually 
 
 **What was done:**
 - Created the Argo CD root Application manifest (App of Apps pattern) — one root app that discovers and manages all other apps
@@ -131,4 +130,26 @@ Installed cert-manager which is the component that issues and auto-renews TLS ce
 ---
 
 
+### Phase 4 — PostgreSQL HA (CloudNativePG)
+**Date:** 2026-04-29
 
+Deployed a highly available PostgreSQL cluster using the CloudNativePG (CNPG) operator.
+
+This would be OpenBao's storage backend where all secrets should be there.
+
+**Files created:**
+- `infrastructure/postgres/cluster.yaml`,  the actual database cluster (3 instances, storage, backup, bootstrap)
+- `apps/cluster-application.yaml`, which is the application which refers to the actual cluster inside infrastructr/postgres/cluster.yaml
+- `apps/cnpg-operator-application.yaml`, which is Argo CD Application for the CNPG operator (cluster-wide controller)
+- `infrastructure/postgres/credentials-secret.yaml`, refers to the temp openBao secret which is applyied manually 
+
+
+**What was done:**
+- Deployed the CNPG operator first which it teaches Kubernetes what a `Cluster` resource means via CRDs
+- Created a 3-instance PostgreSQL cluster: 1 primary + 2 replicas, with automatic failover
+- Configured persistent storage using k3d's built-in `local-path` storage class
+- Set up a bootstrap database named `openbao` owned by user `openbao`
+- Created `openbao-db-credentials` secret manually — bootstrapping requirement before CNPG can create the cluster
+
+
+---
