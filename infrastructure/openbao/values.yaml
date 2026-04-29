@@ -1,18 +1,14 @@
 server:
   ha:
     enabled: true
-    replicas: 3           # High Availability: 3 pods for redundancy
+    replicas: 3
     raft:
-      enabled: false      # We are using Postgres, so we turn off internal Raft storage
-  
-  storage:
-    postgresql:
-      # Change this to your actual Postgres service address!
-      address: "postgres-ha-rw.postgres.svc.cluster.local:5432"
-      database: "openbao"
-      username: "openbao"
-      password: "${OPENBAO_PG_PASSWORD}"
-      sslmode: "require"
+      enabled: false
+
+  extraConfig: |
+    storage "postgresql" {
+      connection_url = "postgresql://openbao:${OPENBAO_PG_PASSWORD}@postgres-ha-rw.postgres.svc.cluster.local:5432/openbao?sslmode=require"
+    }
 
   extraEnvironmentVars:
     OPENBAO_PG_PASSWORD:
