@@ -11,12 +11,12 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: postgres
+  name: postgres # for the cluster and its resources
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: cnpg-system
+  name: cnpg-system # for the cluster operator and its resources
 ---
 apiVersion: v1
 kind: Namespace

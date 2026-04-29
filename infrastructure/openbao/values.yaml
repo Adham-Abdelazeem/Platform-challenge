@@ -3,7 +3,7 @@ server:
         enabled: true
         replicas: 3           # 3 OpenBao instances (1 active, 2 standby)
         raft:
-          enabled: false      # we use PostgreSQL, not Raft
+          enabled: false      # we use PostgreSQL, not Raft which is OpenBao's internal way of storing data
 
       storage:
         postgresql:

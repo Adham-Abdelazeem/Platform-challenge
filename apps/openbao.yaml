@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/yourname/platform-challenge
+    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
     targetRevision: main
     path: infrastructure/openbao
   destination:
