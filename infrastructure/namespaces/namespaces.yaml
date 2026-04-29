@@ -16,7 +16,7 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: postgres
+  name: cnpg-system
 ---
 apiVersion: v1
 kind: Namespace
