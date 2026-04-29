@@ -1,20 +1,46 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openbao-infra-loader
+  name: openbao
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
-    targetRevision: main
-    path: infrastructure/openbao
+    chart: openbao
+    repoURL: https://openbao.github.io/openbao-helm
+    targetRevision: 0.27.2
+    helm:
+      valuesObject:
+        server:
+          ha:
+            enabled: true
+            replicas: 3
+            raft:
+              enabled: false
+          extraConfig: |
+            storage "postgresql" {
+              connection_url = "postgresql://openbao:${OPENBAO_PG_PASSWORD}@postgres-ha-rw.postgres.svc.cluster.local:5432/openbao?sslmode=require"
+            }
+          extraEnvironmentVars:
+            OPENBAO_PG_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: openbao-db-credentials
+                  key: password
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+        ui:
+          enabled: true
+          serviceType: LoadBalancer
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: openbao
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
