@@ -1,21 +1,17 @@
 server:
   ha:
     enabled: true
-    replicas: 3
+    replicas: 3           # 3 OpenBao instances (1 active, 2 standby)
     raft:
-      enabled: false
+      enabled: false      # we use PostgreSQL, not Raft which is OpenBao's internal way of storing data
 
-  # This 'config' block is the most reliable way to set storage
-  config: |
-    ui = true
-    listener "tcp" {
-      tls_disable = 1
-      address     = "[::]:8200"
-      cluster_address = "[::]:8201"
-    }
-    storage "postgresql" {
-      connection_url = "postgres://openbao:${OPENBAO_PG_PASSWORD}@postgres-ha-rw.postgres.svc.cluster.local:5432/openbao?sslmode=require"
-    }
+  storage:
+    postgresql:
+      address: "postgres-ha-rw.postgres.svc.cluster.local:5432"
+      database: "openbao"
+      username: "openbao"
+      password: "${OPENBAO_PG_PASSWORD}"  # from env var
+      sslmode: "require"                  # TLS to PostgreSQL
 
   extraEnvironmentVars:
     OPENBAO_PG_PASSWORD:
@@ -32,6 +28,6 @@ server:
       memory: "512Mi"
       cpu: "500m"
 
-ui:
-  enabled: true
-  serviceType: LoadBalancer
+  ui:
+    enabled: true
+    serviceType: LoadBalancer
