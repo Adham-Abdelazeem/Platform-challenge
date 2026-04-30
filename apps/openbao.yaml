@@ -25,15 +25,9 @@ spec:
                 cluster_address = "[::]:8201"
               }
               storage "postgresql" {
-                connection_url = "postgresql://openbao:${OPENBAO_PG_PASSWORD}@postgres-ha-rw.postgres.svc.cluster.local:5432/openbao?sslmode=require"
+                connection_url = "postgresql://openbao:openbaopassword123@postgres-ha-rw.postgres.svc.cluster.local:5432/openbao?sslmode=disable"
               }
               service_registration "kubernetes" {}
-          extraEnvironmentVars:
-            OPENBAO_PG_PASSWORD:
-              valueFrom:
-                secretKeyRef:
-                  name: openbao-db-credentials
-                  key: password
           resources:
             requests:
               memory: "256Mi"
