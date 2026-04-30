@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workloads
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
+    targetRevision: main
+    path: workloads
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
