@@ -153,3 +153,72 @@ This would be OpenBao's storage backend where all secrets should be there.
 
 
 ---
+
+
+### Phase 5 — OpenBao (Secrets Vault)
+**Date:** 2026-04-30
+
+Deployed OpenBao with PostgreSQL as its storage backend, initialized the vault, unsealed all three instances, and configured the KV secrets engine.
+
+**Files created:**
+- `apps/openbao.yaml`, which is an Argo CD Application installing OpenBao from the official Helm chart with inline values
+
+**What was done:**
+- Deployed OpenBao in HA mode (3 replicas) from `https://openbao.github.io/openbao-helm`
+- Generated 5 unseal keys with a threshold of 3, stored securely outside the repo
+- Unsealed all 3 pods individually (each pod requires 3 of the 5 keys independently)
+- Enabled the KV v2 secrets engine at path `secret/`
+- Stored a test secret at `secret/myapp/config`
+- Created `eso-policy` granting read access to `secret/data/*` and `secret/metadata/*`
+- Created a long-lived ESO token (768h) with that policy attached
+
+
+---
+
+### Phase 6 — External Secrets Operator
+**Date:** 2026-04-30
+
+Installed ESO and configured it to pull secrets from OpenBao and automatically create Kubernetes Secrets in application namespaces.
+
+**Files created:**
+- `apps/eso.yaml`, which isArgo CD Application installing ESO from `https://charts.external-secrets.io`
+- `apps/eso-infra.yaml`, which is Argo CD Application deploying the ClusterSecretStore from GitLab
+- `infrastructure/eso/secret-store.yaml`which is ClusterSecretStore connecting ESO to OpenBao
+
+**What was done:**
+- Installed ESO with `installCRDs: true` and `ServerSideApply: true`
+- Created a `ClusterSecretStore` pointing to OpenBao at `http://openbao.openbao.svc.cluster.local:8200`
+- Used `http` not `https` as TLS is disabled in the local k3d setup
+- Stored the ESO token as a Kubernetes Secret in the `external-secrets` namespace
+
+
+---
+
+### Phase 7 — Secret Pipeline Verified End_to_End
+**Date:** 2026-04-30
+
+Proved the full pipeline works: a secret written to OpenBao automatically appears as a Kubernetes Secret accessible to applications.
+
+**Files created:**
+- `workloads/external-secret.yaml` as ExternalSecret pulling `myapp/config` from OpenBao into a Kubernetes Secret named `myapp-secret` in the `app` namespace
+- `apps/workloads.yaml`which is an Argo CD Application deploying the workloads folder
+
+**Verification:**
+```bash
+kubectl get externalsecret myapp-secret -n app
+# NAME           STATUS         READY
+# myapp-secret   SecretSynced   True
+
+kubectl get secret myapp-secret -n app \
+  -o jsonpath="{.data.db_password}" | base64 -d
+# myappsecretpassword
+```
+
+**Full data flow confirmed:**
+```
+OpenBao (secret stored)
+  → ESO authenticates via scoped token + policy
+    → ESO reads secret over HTTP
+      → Kubernetes Secret created in app namespace
+        → Application reads it as environment variable
+```
