@@ -213,6 +213,7 @@ kubectl get secret myapp-secret -n app \
   -o jsonpath="{.data.db_password}" | base64 -d
 # myappsecretpassword
 ```
+![Logo](C:\Users\adham\Pictures\Screenshots\Screenshot 2026-05-01 210819.png)
 
 **Full data flow confirmed:**
 ```
