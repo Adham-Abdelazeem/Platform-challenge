@@ -206,12 +206,11 @@ Proved the full pipeline works: a secret written to OpenBao automatically appear
 **Verification:**
 ```bash
 kubectl get externalsecret myapp-secret -n app
-# NAME           STATUS         READY
-# myapp-secret   SecretSynced   True
-
 kubectl get secret myapp-secret -n app \
   -o jsonpath="{.data.db_password}" | base64 -d
-# myappsecretpassword
+NAME           STORETYPE            STORE           REFRESH INTERVAL   STATUS         READY   LAST SYNC
+myapp-secret   ClusterSecretStore   openbao-store   1h                 SecretSynced   True    10m
+myappsecretpassword
 ```
 
 **Full data flow confirmed:**
