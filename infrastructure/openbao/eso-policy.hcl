@@ -1,7 +1,6 @@
-# ESO can read and list secrets under secret/
 path "secret/data/*" {
-capabilities = ["read", "list"]
+  capabilities = ["read", "list", "create", "update"]
 }
 path "secret/metadata/*" {
-capabilities = ["read", "list"]
+  capabilities = ["read", "list", "create", "update", "delete"]
 }
