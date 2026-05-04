@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: nginx:alpine    # simple app for demo purposes
+        image: nginx:alpine    
         env:
-        - name: DB_PASSWORD    # inject the secret as an environment variable
+        - name: DB_PASSWORD    
           valueFrom:
             secretKeyRef:
-              name: myapp-secret    # the Secret ESO created
+              name: myapp-secret    
               key: db_password
         - name: API_KEY
           valueFrom:
