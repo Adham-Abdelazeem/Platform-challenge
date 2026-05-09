@@ -3,6 +3,6 @@ kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
   annotations:
-    argocd.argoproj.io/sync-wave: "2"                # as it is internal certifications we are not going to use "Let's Encrypt" option, which requires a public accessible domain
+    argocd.argoproj.io/sync-wave: "5"                # as it is internal certifications we are not going to use "Let's Encrypt" option, which requires a public accessible domain
 spec:
   selfSigned: {}
