@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git
+    repoURL: https://github.com/Adham-Abdelazeem/Platform-challenge.git
     targetRevision: main
     path: workloads
   destination:

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default                  # could be different for security , but let's keep it default for now 
   source:
-    repoURL: https://gitlab.com/m.adham.bio-group/ikim-challenge.git  # tells  Argocd which Repo link to look at
+    repoURL: https://github.com/Adham-Abdelazeem/Platform-challenge.git  # tells  Argocd which Repo link to look at
     targetRevision: main                                     # tells Argocd which branch
     path: infrastructure/cert-manager                      # this is where the actual cert-manager app is exist in my project
   destination:
