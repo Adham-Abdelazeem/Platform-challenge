@@ -8,7 +8,7 @@
 k3d cluster create platform-challenge \
   --agents 3 \
   --k3s-arg "--disable=traefik@server:0" \
-  --port "443:443@loadbalancer" \ 
+  --port "443:443@loadbalancer" \
   --port "80:80@loadbalancer"
 ```
 
@@ -18,16 +18,21 @@ k3d cluster create platform-challenge \
 ## 2. Install Core Infrastructure
 
 ```bash
-# Apply namespaces
+# 1. Apply namespaces
 kubectl apply -f infrastructure/namespaces/namespaces.yaml
 
-# Install Argo CD - this is only one-time installaton
+# 2. Add and update Helm repo
 helm repo add argo https://argoproj.github.io/argo-helm && helm repo update
-helm install argocd argo/argo-cd \
-  --namespace argocd \
-  --values bootstrap/argocd-values.yaml
 
-# Bootstrap root application (App of Apps design)
+# 3. Install/Upgrade Argo CD 
+# The --wait flag ensures we don't proceed until the 'Egg' (ArgoCD) has hatched.
+helm upgrade --install argocd argo/argo-cd \
+  --namespace argocd \
+  --values bootstrap/argocd-values.yaml \
+  --wait \
+  --timeout 5m
+
+# 4. Bootstrap root application (App of Apps design)
 kubectl apply -f bootstrap/root-application.yaml
 ```
 
